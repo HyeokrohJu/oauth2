@@ -25,5 +25,6 @@ public class Member implements Serializable {
 		this.name = name;
 		this.username = username;
 		this.remark = remark;
+		
 	}
 }
