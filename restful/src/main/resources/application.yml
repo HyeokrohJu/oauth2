@@ -27,3 +27,4 @@ logging.level:
   org.springframework:
     security: debug
     boot: debug
+    
