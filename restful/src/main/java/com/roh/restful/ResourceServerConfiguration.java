@@ -21,12 +21,12 @@ public class ResourceServerConfiguration {
 		};
 	}
 	
-	@Bean
-	public CommandLineRunner commandLineRunner(MemberRepository memberRepository){
-		return args -> {
-			memberRepository.save(new Member("이철수", "chulsoo", "test111"));
-			memberRepository.save(new Member("김정인", "jungin11", "test222"));
-			memberRepository.save(new Member("류정우", "jwryu991", "test333"));
-		};
-	}
+//	@Bean
+//	public CommandLineRunner commandLineRunner(MemberRepository memberRepository){
+//		return args -> {
+//			memberRepository.save(new Member("이철수", "chulsoo", "test111"));
+//			memberRepository.save(new Member("김정인", "jungin11", "test222"));
+//			memberRepository.save(new Member("류정우", "jwryu991", "test333"));
+//		};
+//	}
 }
