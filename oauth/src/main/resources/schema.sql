@@ -1,67 +1,52 @@
--- used in tests that use HSQL
+drop table if exists oauth_client_details;
 create table oauth_client_details (
-  client_id VARCHAR(256) PRIMARY KEY,
-  resource_ids VARCHAR(256),
-  client_secret VARCHAR(256),
-  scope VARCHAR(256),
-  authorized_grant_types VARCHAR(256),
-  web_server_redirect_uri VARCHAR(256),
-  authorities VARCHAR(256),
+  client_id VARCHAR(255) PRIMARY KEY,
+  resource_ids VARCHAR(255),
+  client_secret VARCHAR(255),
+  scope VARCHAR(255),
+  authorized_grant_types VARCHAR(255),
+  web_server_redirect_uri VARCHAR(255),
+  authorities VARCHAR(255),
   access_token_validity INTEGER,
   refresh_token_validity INTEGER,
   additional_information VARCHAR(4096),
-  autoapprove VARCHAR(256)
+  autoapprove VARCHAR(255)
 );
 
-create table oauth_client_token (
-  token_id VARCHAR(256),
-  token LONGVARBINARY,
-  authentication_id VARCHAR(256) PRIMARY KEY,
-  user_name VARCHAR(256),
-  client_id VARCHAR(256)
+drop table if exists userinforole;
+drop table if exists userinfo;
+drop table if exists role;
+
+create table if not exists userinfo (
+  id bigint not null AUTO_INCREMENT,
+  referenceid varchar(255) not null,
+  username varchar(100) not null,
+  password varchar(200) not null,
+  enabled boolean default true not null,
+  credentialsexpired boolean default false not null,
+  expired boolean default false not null,
+  locked boolean default false not null,
+  version int not null,
+  createdby varchar(100) not null,
+  createdat datetime not null,
+  updatedby varchar(100) default null,
+  updatedat datetime default null,
+  primary key (id)
 );
 
-create table oauth_access_token (
-  token_id VARCHAR(256),
-  token LONGVARBINARY,
-  authentication_id VARCHAR(256) PRIMARY KEY,
-  user_name VARCHAR(256),
-  client_id VARCHAR(256),
-  authentication LONGVARBINARY,
-  refresh_token VARCHAR(256)
+create table if not exists role (
+  id bigint not null,
+  code varchar(50) not null,
+  label varchar(100) not null,
+  ordinal int not null,
+  effectiveat datetime not null,
+  expiresat datetime default null,
+  createdat datetime not null,
+  primary key (id)
 );
 
-create table oauth_refresh_token (
-  token_id VARCHAR(256),
-  token LONGVARBINARY,
-  authentication LONGVARBINARY
-);
-
-create table oauth_code (
-  code VARCHAR(256), authentication LONGVARBINARY
-);
-
-create table oauth_approvals (
-	userId VARCHAR(256),
-	clientId VARCHAR(256),
-	scope VARCHAR(256),
-	status VARCHAR(10),
-	expiresAt TIMESTAMP,
-	lastModifiedAt TIMESTAMP
-);
-
-
--- customized oauth_client_details table
-create table ClientDetails (
-  appId VARCHAR(256) PRIMARY KEY,
-  resourceIds VARCHAR(256),
-  appSecret VARCHAR(256),
-  scope VARCHAR(256),
-  grantTypes VARCHAR(256),
-  redirectUrl VARCHAR(256),
-  authorities VARCHAR(256),
-  access_token_validity INTEGER,
-  refresh_token_validity INTEGER,
-  additionalInformation VARCHAR(4096),
-  autoApproveScopes VARCHAR(256)
+create table if not exists userinforole (
+  userid bigint not null,
+  roleid bigint not null,
+  primary key (userid, roleid)
 );
