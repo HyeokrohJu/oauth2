@@ -30,7 +30,7 @@ import com.roh.oauth.model.UserInfo;
 
 @Repository
 public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
-	
+
 	@Query("SELECT a FROM userinfo a WHERE a.username = :username")
 	UserInfo findByUsername(@Param("username") String username);
 }

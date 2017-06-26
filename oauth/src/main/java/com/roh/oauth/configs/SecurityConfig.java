@@ -41,22 +41,22 @@ import com.roh.oauth.service.CustomUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private UserInfoAuthenticationProvider userInfoAuthenticationProvider;
-	
+
 	@Override
 	@Autowired
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
 		auth.authenticationProvider(userInfoAuthenticationProvider);
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Override
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {

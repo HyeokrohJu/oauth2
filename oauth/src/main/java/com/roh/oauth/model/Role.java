@@ -15,6 +15,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * <pre>
  * 1. 패키지명 : com.roh.oauth.model
@@ -26,59 +30,18 @@ import javax.validation.constraints.NotNull;
  */
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Role {
+
 	@Id
 	private Long id;
-	
+
 	@NotNull
 	private String code;
-	
+
 	@NotNull
 	private String label;
-	
-	public Role(){}
 
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the code
-	 */
-	public String getCode() {
-		return code;
-	}
-
-	/**
-	 * @param code the code to set
-	 */
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	/**
-	 * @return the label
-	 */
-	public String getLabel() {
-		return label;
-	}
-
-	/**
-	 * @param label the label to set
-	 */
-	public void setLabel(String label) {
-		this.label = label;
-	}
-	
-	
 }

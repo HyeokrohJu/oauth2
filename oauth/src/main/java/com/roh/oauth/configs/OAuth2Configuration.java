@@ -52,7 +52,7 @@ import com.roh.oauth.service.CustomUserDetailsService;
 public class OAuth2Configuration {
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
-	
+
 	@Bean
 	public TokenStore tokenStore() {
 		return new JwtTokenStore(jwtAccessTokenConverter());
@@ -62,39 +62,41 @@ public class OAuth2Configuration {
 	public JwtAccessTokenConverter jwtAccessTokenConverter() {
 		JwtAccessTokenConverter converter = new CustomTokenEnhancer();
 		converter.setSigningKey("123");
-		
+
 		DefaultAccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();
 		DefaultUserAuthenticationConverter userTokenConverter = new DefaultUserAuthenticationConverter();
 		userTokenConverter.setUserDetailsService(userDetailsService);
 		accessTokenConverter.setUserTokenConverter(userTokenConverter);
-		
+
 		converter.setAccessTokenConverter(accessTokenConverter);
-		
+
 		return converter;
 	}
-	
+
 	protected static class CustomTokenEnhancer extends JwtAccessTokenConverter {
 		@Override
 		public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
-			UserInfo user = (UserInfo)authentication.getPrincipal();
-			
+			UserInfo user = (UserInfo) authentication.getPrincipal();
+
 			Map<String, Object> info = new LinkedHashMap<String, Object>(accessToken.getAdditionalInformation());
-			info.put("email", user.getCreatedat());
+			info.put("hrschema", authentication.getOAuth2Request().getRequestParameters().get("schema"));
+			info.put("hrtimezone", authentication.getOAuth2Request().getRequestParameters().get("timezone"));
+			info.put("userid", user.getId());
 			
 			DefaultOAuth2AccessToken customAccessToken = new DefaultOAuth2AccessToken(accessToken);
-			
+
 			Set<GrantedAuthority> authoritiesSet = new HashSet<>(authentication.getAuthorities());
-			
+
 			String[] authorities = new String[authoritiesSet.size()];
-			
+
 			int i = 0;
-			for(GrantedAuthority authority : authoritiesSet){
+			for (GrantedAuthority authority : authoritiesSet) {
 				authorities[i++] = authority.getAuthority();
 			}
-			
+
 			info.put("authorities", authorities);
 			customAccessToken.setAdditionalInformation(info);
-			
+
 			return super.enhance(customAccessToken, authentication);
 		}
 	}
