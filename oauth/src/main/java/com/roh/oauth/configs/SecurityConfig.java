@@ -36,6 +36,7 @@ import com.roh.oauth.service.CustomUserDetailsService;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
 
@@ -48,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(userDetailsService);
 		auth.authenticationProvider(userInfoAuthenticationProvider);
 	}
-
+	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

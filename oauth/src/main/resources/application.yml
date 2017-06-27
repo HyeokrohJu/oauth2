@@ -12,6 +12,10 @@ logging.level:
   org.springframework:
     security: debug
     boot: info
+    
+multitenant:
+  tenantKey: X-Person-Tenant
+  defaultTenant: hrgw    
 
 ---
 #local 설정

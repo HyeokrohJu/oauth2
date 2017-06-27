@@ -13,6 +13,11 @@ package com.roh.oauth.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
@@ -23,9 +28,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.roh.oauth.model.Role;
-import com.roh.oauth.model.UserInfo;
-import com.roh.oauth.repository.UserInfoRepository;
+import com.roh.oauth.dao.UserInfoDao;
+import com.roh.oauth.vo.Role;
+import com.roh.oauth.vo.UserInfo;
 
 /**
  * <pre>
@@ -40,12 +45,15 @@ import com.roh.oauth.repository.UserInfoRepository;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-	private final UserInfoRepository userInfoRepository;
+	@Autowired
+	private HttpServletRequest request;
+
+	private final UserInfoDao userInfoRepository;
 
 	private final AccountStatusUserDetailsChecker detailsChecker = new AccountStatusUserDetailsChecker();
 
 	@Autowired
-	public CustomUserDetailsService(UserInfoRepository userInfoRepository) {
+	public CustomUserDetailsService(UserInfoDao userInfoRepository) {
 		this.userInfoRepository = userInfoRepository;
 	}
 
@@ -56,11 +64,18 @@ public class CustomUserDetailsService implements UserDetailsService {
 	 * loadUserByUsername(java.lang.String)
 	 */
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserInfo userInfo = userInfoRepository.findByUsername(username);
+	public UserDetails loadUserByUsername(String loginid) throws UsernameNotFoundException {
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("loginid", loginid);
+		paramMap.put("hrschema", request.getParameter("hrschema"));
+		UserInfo userInfo = userInfoRepository.findByLoginId(paramMap);
+		
+		paramMap.put("userid", String.valueOf(userInfo.getUserid()));
+		Set<Role> roleInfo = userInfoRepository.findRole(paramMap);
+		userInfo.setRoles(roleInfo);
 
-		if (userInfo == null) {
-			throw new UsernameNotFoundException("User " + username + " not found.");
+		if (userInfo.getUserid() == null) {
+			throw new UsernameNotFoundException("User " + loginid + " not found.");
 		}
 
 		if (userInfo.getRoles() == null || userInfo.getRoles().isEmpty()) {

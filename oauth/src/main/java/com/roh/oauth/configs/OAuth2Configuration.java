@@ -34,7 +34,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
-import com.roh.oauth.model.UserInfo;
+import com.roh.oauth.vo.UserInfo;
 import com.roh.oauth.service.CustomUserDetailsService;
 
 /**
@@ -79,9 +79,18 @@ public class OAuth2Configuration {
 			UserInfo user = (UserInfo) authentication.getPrincipal();
 
 			Map<String, Object> info = new LinkedHashMap<String, Object>(accessToken.getAdditionalInformation());
-			info.put("hrschema", authentication.getOAuth2Request().getRequestParameters().get("schema"));
-			info.put("hrtimezone", authentication.getOAuth2Request().getRequestParameters().get("timezone"));
-			info.put("userid", user.getId());
+			info.put("hrschema", authentication.getOAuth2Request().getRequestParameters().get("hrschema"));
+			info.put("hrtimezone", authentication.getOAuth2Request().getRequestParameters().get("hrtimezone"));
+			Map<String, Object> userinfoMap = new LinkedHashMap<String, Object>();
+			userinfoMap.put("userid", user.getUserid());
+			userinfoMap.put("usernm", user.getUsernm());
+			userinfoMap.put("deptid", user.getDeptid());
+			userinfoMap.put("deptnm", user.getDeptnm());
+			userinfoMap.put("compid", user.getCompid());
+			userinfoMap.put("compnm", user.getCompnm());
+			userinfoMap.put("loginid", user.getLoginid());
+			userinfoMap.put("email", user.getEmail());
+			info.put("userInfo", userinfoMap);
 			
 			DefaultOAuth2AccessToken customAccessToken = new DefaultOAuth2AccessToken(accessToken);
 
