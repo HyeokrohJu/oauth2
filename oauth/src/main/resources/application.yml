@@ -1,7 +1,5 @@
 
 #기본 설정
-server:
-  port: 8080
 
 security:
   oauth2:
@@ -10,17 +8,13 @@ security:
 
 logging.level:
   org.springframework:
-    security: debug
+    security: info
     boot: info
     
-multitenant:
-  tenantKey: X-Person-Tenant
-  defaultTenant: hrgw    
-
 ---
 #local 설정
 server:
-  port: 8080
+  port: 8082
   
 spring:
   profiles: local

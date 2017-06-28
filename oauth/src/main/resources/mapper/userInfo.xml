@@ -7,7 +7,7 @@
 	<select id="findByLoginId" resultType="com.roh.oauth.vo.UserInfo" parameterType="java.util.Map">
 		/*--etBrdTree--*/
 		select 
-			userid as id, usernm as username, passwd as password,
+			userid as id, loginid as username, passwd as password,
 			userid, usernm, deptid, deptnm, compid, compnm, loginid, passwd, email,
 			enabled, credentialsexpired, expired, locked, createdtime
 		from ${hrschema}.roho_member
