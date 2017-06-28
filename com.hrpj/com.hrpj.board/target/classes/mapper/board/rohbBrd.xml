@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 게시판 관련 쿼리 -->
+<mapper namespace="com.hrpj.board.dao.RohbBrdDao">
+
+	<!-- brd default field -->
+	<sql id="default-field">
+        brdid, upbrdid, moduleid, sysgbn, brdnm, classnm, brdshortnm, description, useyn, fldyn, brdtype
+		, listtype, topyn, prtntyn, replyyn, commentyn, notiyn, replynotiyn, cmntnotiyn, mailyn, smsyn
+		, msgyn, scrapyn, saveyn, notihistyn, headlineyn, clickdispyn, rcmdyn, evalyn, readhistyn, attachyn
+		, attachlimityn, attachsize, separateyn, separatetype, disporder, pwduseyn, secretyn, linkedyn, odeleteyn
+		, newbltyn, annyn, streamyn, bltreuseyn, bltlimit, templateid, startdtime, cmpltdtime, brdurl, iconnm, iconurl
+		, gnbyn, customid1, customid2, customid3, appryn, reserveyn, shareyn
+    </sql>
+    
+	<select id="getBrdTree" resultType="java.util.HashMap">
+		/*--etBrdTree--*/
+		select 
+			<include refid="default-field" />
+			, fn.level, fn.rnum
+		from (
+			select ${hrschema}.get_lvl_brd_table(#{useyn}) as idx, @level as level, @rownum := @rownum + 1 as rnum
+			from 
+				(select @start_with := #{startid}, @id := @start_width, @level := 0) vars, 
+				${hrschema}.rohb_brd,
+				(select @rownum := 0) rownum
+			where @idx is not null
+		) fn
+		join ${hrschema}.rohb_brd brd
+		on brd.brdid = fn.idx
+		order by rnum
+	</select>
+ 
+</mapper>

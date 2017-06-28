@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: com.hrpj.restful
+Implementation-Version: 0.0.1
+Built-By: JHR-GRAM
+Implementation-Vendor-Id: com.hrpj.restful
+Build-Jdk: 1.8.0_131
+Implementation-URL: http://projects.spring.io/spring-boot/com.hrpj/com
+ .hrpj.restful/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
