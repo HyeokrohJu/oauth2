@@ -1,0 +1,49 @@
+
+#기본 설정
+
+security:
+  oauth2:
+    authorization:
+      token-key-access: isAuthenticated()
+
+logging.level:
+  org.springframework:
+    security: info
+    boot: info
+    
+---
+#local 설정
+server:
+  port: 8082
+  
+spring:
+  profiles: local
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    show-sql: true
+      
+  datasource:
+    url: jdbc:mariadb://localhost:3306/oauth
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: oauth
+    password: oauth@123
+
+---
+#dev 설정
+server:
+  port: 8080
+  
+spring:
+  profiles: dev
+  
+---
+#product 설정
+server:
+  port: 80
+  
+spring:
+  profiles: prod
